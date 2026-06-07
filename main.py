@@ -14,6 +14,7 @@ from loss import (long_loss_LSR, surv_loss,inten_loss)
 # Other Python libraries
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 from sklearn.preprocessing import MinMaxScaler
 pd.options.mode.chained_assignment = None
@@ -202,7 +203,7 @@ def main(args=None):
         train_id = np.random.permutation(train_id)
         vali_id = np.random.permutation(vali_id)
 
-        for batch in range(0, len(train_id), batch_size):
+        for batch in tqdm(range(0, len(train_id), batch_size), desc=f"Epoch {epoch} Train"):
             optimizer.zero_grad()
             indices = train_id[batch:batch+batch_size]
             batch_data = train_data[train_data["id"].isin(indices)]
@@ -242,7 +243,7 @@ def main(args=None):
         model = model.eval()
         vali_loss = 0
         tokens = 0
-        for batch in range(0, len(vali_id), batch_size):
+        for batch in tqdm(range(0, len(vali_id), batch_size), desc=f"Epoch {epoch} Valid"):
             indices = vali_id[batch:batch+batch_size]
             batch_data = vali_data[vali_data["id"].isin(indices)]
             batch  = get_tensors(batch_data.copy(),long=Y_str_list,base=BASE_str_list,device=device)
