@@ -42,7 +42,7 @@ def dag_mask(pad,dag,nan_mask):
     expand_vec = []
     for _ in range(seq_length):
         expand_vec.append(dag_mask)
-    dag_mask = torch.block_diag(*expand_vec)
+    dag_mask = torch.block_diag(*expand_vec).to(torch.bool)
     dag_mask = ~dag_mask
     dag_mask = dag_mask.unsqueeze(0).numpy()
     future_mask = future_mask & dag_mask
@@ -69,7 +69,7 @@ def dec_mask(pad,dag):
     expand_vec = []
     for _ in range(seq_length):
         expand_vec.append(dag_mask)
-    dag_mask = torch.block_diag(*expand_vec)
+    dag_mask = torch.block_diag(*expand_vec).to(torch.bool)
     dag_mask = dag_mask.unsqueeze(0).numpy()
     mask = mask & dag_mask
     return mask.to(device=device)
