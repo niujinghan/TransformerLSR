@@ -123,7 +123,7 @@ class TransformerLSR(nn.Module):
 
         self.d_model = d_model
         # order consistent with *input* (pre-sorted)
-        self.long_embeddings = clones(nn.Linear(1,d_model),d_long)
+        self.long_embeddings = nn.ModuleList([nn.Linear(1, d_model) for _ in range(d_long)])
         self.base_embedding = nn.Linear(d_base,d_model)      
         self.encoder_layers = nn.ModuleList([Encoder_Layer(3*d_model,nhead,dropout,ffn_dim=ffn_dim)
                                              for _ in range(num_encoder_layers)])
@@ -132,7 +132,7 @@ class TransformerLSR(nn.Module):
                                              for _ in range(num_decoder_layers)])
 
         # by same convention, let's use pre-sorted indices
-        self.long_p = clones(nn.Linear(3*d_model,1),d_long)
+        self.long_p = nn.ModuleList([nn.Linear(3*d_model, 1) for _ in range(d_long)])
         self.surv = nn.Linear(3*d_model, 1)
         self.inten = nn.Linear(3*d_model,1)
         self.softplus1 = nn.Softplus()
@@ -212,9 +212,8 @@ class TransformerLSR(nn.Module):
             _nan_mask = torch.isnan(input_long_clone[:,:,long_i_ind])
             # aggregate for the combined nan mask, false for nan
             nan_mask.append(~_nan_mask)
-            # replace the nan values by 0 (not used anyway)
             _input_i = input_long_clone[:,:,long_i_ind]
-            _input_i[_nan_mask] = 0.0
+            _input_i = torch.where(_nan_mask, torch.zeros_like(_input_i), _input_i)
             long_i_embedding = self.long_embeddings[long_i_ind](_input_i.reshape(batch_size,length,1))
             long_i_embedding = torch.cat([long_i_embedding,base_embedding,temp_embedding],dim=-1)
             embed_list.append(long_i_embedding)
