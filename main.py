@@ -28,12 +28,12 @@ def main(args=None):
     parser.add_argument("--batch_size", default=16, type=int)      # Mini batch size for networks
     parser.add_argument("--num_enc_layer", default=4, type=int)  
     parser.add_argument("--num_dec_layer", default=4, type=int)  
-    parser.add_argument("--d_long", default=3, type=int)    
+    parser.add_argument("--d_long", default=9, type=int)    # 纵向变量数：AL,K1,K2,WTW,SPH,CYL,AX,SE,age
     parser.add_argument("--num_head", default=4, type=int)      
     parser.add_argument("--model_size", default=32, type=int)     
     parser.add_argument('--suffix', type=str, default='train')
     parser.add_argument('--model', type=str, default='LSR')
-    parser.add_argument('--data', type=str, default='DIVAT_sim_1000_visit_1000_long_3')
+    parser.add_argument('--data', type=str, default='myopia')         # 近视预测数据集
     parser.add_argument("--local", action="store_true")   # local test mode
     parser.add_argument("--Y1_missing", default=0, type=float)
     parser.add_argument("--Y2_missing", default=0, type=float)
@@ -79,10 +79,15 @@ def main(args=None):
     
     
     
+    # 纵向变量列名：Y1=AL, Y2=K1, ..., Y9=age
+    # （与 prepare_myopia_data.py 中 LONG_COLS 顺序对应）
     Y_str_list = []
     for i in range(args.d_long):
         Y_str = "Y"+str(i+1)
         Y_str_list.append(Y_str)
+
+    # 基线变量列名：X1=gender, X2=eye
+    BASE_str_list = ["X1", "X2"]
 
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -113,22 +118,27 @@ def main(args=None):
     logger.info(f'Data containing total {I} trajectories' )
     logger.info('=' * 50)
 
+    # ----------------------------------------------------------------
+    # 数据集划分：使用预先存好的 split 信息（train/val/test），
+    # 不能随机重分（数据集已按患者级别在 CSV 文件中分好）
+    # ----------------------------------------------------------------
+    split_info_path = f'data/{args.data}_split_info.pkl'
+    with open(split_info_path, 'rb') as f:
+        split_info = pickle.load(f)   # dict: {sample_id -> 'train'/'val'/'test'}
+
+    # 过滤掉 obstime > time 的行（只保留事件前的观察）
     data = data_all[data_all.obstime <= data_all.time]
 
-    random_id = range(I) #np.random.permutation(range(I))
-
-    train_id = random_id[0:int(0.6*I)]
-    
-    ## Scale data using Min-Max Scaler
-    minmax_scaler = MinMaxScaler(feature_range=(-1,1))
-
-    vali_id = random_id[int(0.6*I):int(0.8*I)]
-    test_id = random_id[int(0.8*I):I]
+    train_id = [sid for sid, sp in split_info.items() if sp == 'train']
+    vali_id  = [sid for sid, sp in split_info.items() if sp == 'val']
+    test_id  = [sid for sid, sp in split_info.items() if sp == 'test']
 
     train_data = data[data["id"].isin(train_id)]
-    
-    vali_data = data[data["id"].isin(vali_id)]
-    test_data = data[data["id"].isin(test_id)]
+    vali_data  = data[data["id"].isin(vali_id)]
+    test_data  = data[data["id"].isin(test_id)]
+
+    ## Scale data using Min-Max Scaler（仅对纵向变量）
+    minmax_scaler = MinMaxScaler(feature_range=(-1,1))
 
     train_data.loc[:,Y_str_list] = minmax_scaler.fit_transform(train_data.loc[:,Y_str_list])
     vali_data.loc[:,Y_str_list] = minmax_scaler.transform(vali_data.loc[:,Y_str_list])
@@ -144,7 +154,8 @@ def main(args=None):
     logger.info(f'Training for seed {seednum}')
     
 
-    model = TransformerLSR(d_long=args.d_long,d_base=3,dag_info=dag_info, d_model=args.model_size, nhead=args.num_head,
+    # d_base=2 对应基线变量 gender, eye
+    model = TransformerLSR(d_long=args.d_long,d_base=len(BASE_str_list),dag_info=dag_info, d_model=args.model_size, nhead=args.num_head,
                 num_encoder_layers=args.num_enc_layer,num_decoder_layers=args.num_dec_layer,device=device)
     long_loss = long_loss_LSR
         
@@ -196,7 +207,7 @@ def main(args=None):
             indices = train_id[batch:batch+batch_size]
             batch_data = train_data[train_data["id"].isin(indices)]
 
-            batch  = get_tensors(batch_data.copy(),long=Y_str_list,device=device)
+            batch  = get_tensors(batch_data.copy(),long=Y_str_list,base=BASE_str_list,device=device)
 
             long_preds,visit_inten,surv_inten,Lambda,Zeta = model(batch)
             
@@ -234,7 +245,7 @@ def main(args=None):
         for batch in range(0, len(vali_id), batch_size):
             indices = vali_id[batch:batch+batch_size]
             batch_data = vali_data[vali_data["id"].isin(indices)]
-            batch  = get_tensors(batch_data.copy(),long=Y_str_list,device=device)
+            batch  = get_tensors(batch_data.copy(),long=Y_str_list,base=BASE_str_list,device=device)
             with torch.no_grad():
                 long_preds,visit_inten,surv_inten,Lambda,Zeta = model(batch)
                 loss1,full_loss1,num_tokens = long_loss(long_preds,batch)
@@ -248,43 +259,46 @@ def main(args=None):
 
 
 
-        event_ll = (torch.log(visit_inten[0])*batch["longmask"][0,1:]).sum()
-        non_event_ll = (Lambda[0]*batch["mask"][0]).sum()
-        visit_ll = event_ll - non_event_ll
-        #logger.info(f"sample trajectory visit log likelihood:{visit_ll.item():.2f}")
-        logger.info(f"sample trajectory visit event intensity:{event_ll.item():.2f}")
-        logger.info(f"sample trajectory visit non event intensity:{non_event_ll.item():.2f}")
-        ground_truth_ll = batch_data["event_ll"].to_numpy()[0]
-        logger.info(f"ground truth visit event intensity:{ground_truth_ll:.2f}")
-        ground_truth_non_ll = batch_data["event_non_ll"].to_numpy()[0]
-        logger.info(f"ground truth visit NON-event intensity:{ground_truth_non_ll:.2f}")
+        # ----------------------------------------------------------------
+        # 注意：以下日志块依赖仿真数据特有列（event_ll / true_inten / surv_ll 等），
+        # 近视真实数据集中不含这些列，已注释掉。若使用仿真数据可恢复。
+        # ----------------------------------------------------------------
+        # event_ll = (torch.log(visit_inten[0])*batch["longmask"][0,1:]).sum()
+        # non_event_ll = (Lambda[0]*batch["mask"][0]).sum()
+        # visit_ll = event_ll - non_event_ll
+        # logger.info(f"sample trajectory visit event intensity:{event_ll.item():.2f}")
+        # logger.info(f"sample trajectory visit non event intensity:{non_event_ll.item():.2f}")
+        # ground_truth_ll = batch_data["event_ll"].to_numpy()[0]         # 仿真列
+        # logger.info(f"ground truth visit event intensity:{ground_truth_ll:.2f}")
+        # ground_truth_non_ll = batch_data["event_non_ll"].to_numpy()[0] # 仿真列
+        # logger.info(f"ground truth visit NON-event intensity:{ground_truth_non_ll:.2f}")
+        # first_traj_len = torch.sum(batch["mask"][0],dim=-1).cpu().numpy()
+        # logger.info(f"sample trajectory visit intensities:{np.log(visit_inten[0,:first_traj_len-1].detach().cpu().numpy())}")
+        # ground_intensities = batch_data["true_inten"].to_numpy()[:first_traj_len-1]  # 仿真列
+        # logger.info(f"ground truth visit event intensities:{np.log(ground_intensities)}")
+        # total_time = batch["obstime"][0][1:first_traj_len]
+        # logger.info(f"times:{total_time}")
+        # surv_event_ll = (torch.log(surv_inten[0])*batch["intenmask"][0,1:]).sum(dim=-1)
+        # non_surv_event_ll = (Zeta[0]*batch["mask"][0]).sum(dim=-1)
+        # surv_ll = surv_event_ll - non_surv_event_ll
+        # logger.info(f"sample trajectory survival event intensity:{surv_event_ll.item():.2f}")
+        # logger.info(f"sample trajectory survival non event intensity:{non_surv_event_ll.item():.2f}")
+        # ground_truth_surv_ll = batch_data["surv_ll"].to_numpy()[0]         # 仿真列
+        # logger.info(f"ground truth survival event intensity:{ground_truth_surv_ll:.2f}")
+        # ground_truth_surv_non_ll = batch_data["surv_non_ll"].to_numpy()[0] # 仿真列
+        # logger.info(f"ground truth survival NON-event intensity:{ground_truth_surv_non_ll:.2f}")
+        # first_traj_len = torch.sum(batch["mask"][0],dim=-1).cpu().numpy()
+        # logger.info(f"sample trajectory surv intensities:{np.log(surv_inten[0,:first_traj_len].detach().cpu().numpy())}")
+        # ground_surv_intensities = batch_data["true_surv"].to_numpy()[:first_traj_len]  # 仿真列
+        # logger.info(f"ground truth surv intensities:{np.log(ground_surv_intensities)}")
+        # total_time = batch["totaltime"][0][1:first_traj_len+1]
+        # logger.info(f"times:{total_time}")
+        # ----------------------------------------------------------------
 
-        # more detailed comparison
+        # 近视数据集可用的验证指标（不依赖仿真列）
         first_traj_len = torch.sum(batch["mask"][0],dim=-1).cpu().numpy()
-        logger.info(f"sample trajectory visit intensities:{np.log(visit_inten[0,:first_traj_len-1].detach().cpu().numpy())}")
-        ground_intensities = batch_data["true_inten"].to_numpy()[:first_traj_len-1]
-        logger.info(f"ground truth visit event intensities:{np.log(ground_intensities)}")
-        total_time = batch["obstime"][0][1:first_traj_len]
-        logger.info(f"times:{total_time}")
-
-        #sample survival examination for last batch first trajectory
-        surv_event_ll = (torch.log(surv_inten[0])*batch["intenmask"][0,1:]).sum(dim=-1)
-        non_surv_event_ll = (Zeta[0]*batch["mask"][0]).sum(dim=-1)
-        surv_ll = surv_event_ll - non_surv_event_ll
-        logger.info(f"sample trajectory survival event intensity:{surv_event_ll.item():.2f}")
-        logger.info(f"sample trajectory survival non event intensity:{non_surv_event_ll.item():.2f}")
-        ground_truth_surv_ll = batch_data["surv_ll"].to_numpy()[0]
-        logger.info(f"ground truth survival event intensity:{ground_truth_surv_ll:.2f}")
-        ground_truth_surv_non_ll = batch_data["surv_non_ll"].to_numpy()[0]
-        logger.info(f"ground truth survival NON-event intensity:{ground_truth_surv_non_ll:.2f}")
-
-        # more detailed comparison
-        first_traj_len = torch.sum(batch["mask"][0],dim=-1).cpu().numpy()
-        logger.info(f"sample trajectory surv intensities:{np.log(surv_inten[0,:first_traj_len].detach().cpu().numpy())}")
-        ground_surv_intensities = batch_data["true_surv"].to_numpy()[:first_traj_len]
-        logger.info(f"ground truth surv intensities:{np.log(ground_surv_intensities)}")
-        total_time = batch["totaltime"][0][1:first_traj_len+1]
-        logger.info(f"times:{total_time}")
+        logger.info(f"sample traj visit event intensity (log): {np.log(visit_inten[0,:first_traj_len-1].detach().cpu().numpy())}")
+        logger.info(f"sample traj surv event intensity (log):  {np.log(surv_inten[0,:first_traj_len].detach().cpu().numpy())}")
 
 
 
