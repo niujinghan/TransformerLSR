@@ -48,7 +48,7 @@ def main(args=None):
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter(fmt="[ %(asctime)s ] %(message)s",
-                                datefmt="%a %b %d %H:%M:%S %Y")
+                                datefmt="%a %b %d %H-%M-%S %Y")
     sHandler = logging.StreamHandler()
     sHandler.setFormatter(formatter)
     logger.addHandler(sHandler)
@@ -56,7 +56,7 @@ def main(args=None):
                                 time.strftime("%Y-%m-%d", time.localtime()))
     if not os.path.exists(work_dir):
         os.makedirs(work_dir, exist_ok=True)
-    time_prefix = time.strftime("%H:%M:%S", time.localtime())
+    time_prefix = time.strftime("%H-%M-%S", time.localtime())
     full_path = work_dir + '/'+time_prefix +'_'+args.data+'_'+args.model+'_'+"head_"+str(args.num_head)+'_'+ \
                                         "enc_layer_"+str(args.num_enc_layer)+'_'+"dec_layer_"+str(args.num_dec_layer)+'_'+"size_"+str(args.model_size)+'_'+ \
                                         '_'+"visit_weight_"+str(args.inten_weight)+'_'+"surv_weight_"+str(args.surv_weight)+ \

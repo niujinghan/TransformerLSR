@@ -1,0 +1,318 @@
+﻿python : [ Sun Jun 07 20-34-47 2026 ] Namespace(seed=1, epoch=50, batch_size=16, num_enc_layer=4, num_dec_layer=4, d_lo
+ng=9, num_head=4, model_size=32, suffix='train', model='LSR', data='myopia', local=False, Y1_missing=0, Y2_missing=0, Y
+3_missing=0, inten_weight=0.01, surv_weight=0.1, lr=0.0003)
+所在位置 行:1 字符: 35
++ $env:KMP_DUPLICATE_LIB_OK="TRUE"; python main.py > trace.txt 2>&1
++                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([ Sun Jun 07 20...0.1, lr=0.0003):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[ Sun Jun 07 20-34-47 2026 ] ==================================================
+[ Sun Jun 07 20-34-47 2026 ] Starting training for dataset: myopia
+[ Sun Jun 07 20-34-47 2026 ] 4 heads, 4 enc layers,4 dec layers, 32 model dimension
+[ Sun Jun 07 20-34-47 2026 ] Data containing total 10018 trajectories
+[ Sun Jun 07 20-34-47 2026 ] ==================================================
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\main.py:143: FutureWarning: Setting an item of incompatibl
+e dtype is deprecated and will raise in a future error of pandas. Value '[-0.95555556 -0.95555556 -0.97777778 ...  0.9 
+        0.9
+  0.93333333]' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  train_data.loc[:,Y_str_list] = minmax_scaler.fit_transform(train_data.loc[:,Y_str_list])
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\main.py:143: FutureWarning: Setting an item of incompatibl
+e dtype is deprecated and will raise in a future error of pandas. Value '[-0.57142857 -0.57142857  0.28571429 ...  0.71
+428571  0.71428571
+  0.71428571]' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  train_data.loc[:,Y_str_list] = minmax_scaler.fit_transform(train_data.loc[:,Y_str_list])
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\main.py:144: FutureWarning: Setting an item of incompatibl
+e dtype is deprecated and will raise in a future error of pandas. Value '[-0.95555556  0.97777778  1.         ...  0.97
+777778  0.95555556
+ -0.94444444]' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  vali_data.loc[:,Y_str_list] = minmax_scaler.transform(vali_data.loc[:,Y_str_list])
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\main.py:144: FutureWarning: Setting an item of incompatibl
+e dtype is deprecated and will raise in a future error of pandas. Value '[-4.28571429e-01 -4.28571429e-01 -2.22044605e-
+16 ... -4.28571429e-01
+ -7.14285714e-01 -7.14285714e-01]' has dtype incompatible with int64, please explicitly cast to a compatible dtype firs
+t.
+  vali_data.loc[:,Y_str_list] = minmax_scaler.transform(vali_data.loc[:,Y_str_list])
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\main.py:145: FutureWarning: Setting an item of incompatibl
+e dtype is deprecated and will raise in a future error of pandas. Value '[ 0.82222222  0.88888889  0.81111111 ... -0.92
+222222 -0.87777778
+ -0.87777778]' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  test_data.loc[:,Y_str_list] = minmax_scaler.transform(test_data.loc[:,Y_str_list])
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\main.py:145: FutureWarning: Setting an item of incompatibl
+e dtype is deprecated and will raise in a future error of pandas. Value '[-1.42857143e-01 -2.22044605e-16  1.42857143e-
+01 ... -7.14285714e-01
+ -5.71428571e-01 -5.71428571e-01]' has dtype incompatible with int64, please explicitly cast to a compatible dtype firs
+t.
+  test_data.loc[:,Y_str_list] = minmax_scaler.transform(test_data.loc[:,Y_str_list])
+[ Sun Jun 07 20-34-47 2026 ] ==================================================
+[ Sun Jun 07 20-34-47 2026 ] Training for seed 1
+[ Sun Jun 07 20-34-49 2026 ] epoch: 0
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:30: FutureWarning: DataFrameGroupBy.grouper i
+s deprecated and will be removed in a future version of pandas.
+  df.loc[:,"id_new"] = df.groupby(by="id").grouper.group_info[0]
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:53: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii] =  torch.tensor(row.loc[base]).to(x_long)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:62: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_base[ii,jj,:] = torch.tensor(row.loc[base],device=device)
+C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\functions.py:63: FutureWarning: Series.__getitem__ treatin
+g keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with 
+DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  x_long[ii,jj,:] = torch.tensor(row.loc[long],device=device)
+Traceback (most recent call last):
+  File "C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\main.py", line 326, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\niujinghan\Desktop\第三章\近视预测数据集\model\TransformerLSR\main.py", line 220, in main
+    loss.backward()
+    ~~~~~~~~~~~~~^^
+  File "C:\Users\niujinghan\anaconda3\Lib\site-packages\torch\_tensor.py", line 631, in backward
+    torch.autograd.backward(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        self, gradient, retain_graph, create_graph, inputs=inputs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\niujinghan\anaconda3\Lib\site-packages\torch\autograd\__init__.py", line 379, in backward
+    _engine_run_backward(
+    ~~~~~~~~~~~~~~~~~~~~^
+        tensors,
+        ^^^^^^^^
+    ...<5 lines>...
+        accumulate_grad=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\niujinghan\anaconda3\Lib\site-packages\torch\autograd\graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        t_outputs, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )  # Calls into the C++ engine to run the backward pass
+    ^
+RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation: [torch.Fl
+oatTensor [32, 1]] is at version 9; expected version 8 instead. Hint: enable anomaly detection to find the operation th
+at failed to compute its gradient, with torch.autograd.set_detect_anomaly(True, check_nan=False).

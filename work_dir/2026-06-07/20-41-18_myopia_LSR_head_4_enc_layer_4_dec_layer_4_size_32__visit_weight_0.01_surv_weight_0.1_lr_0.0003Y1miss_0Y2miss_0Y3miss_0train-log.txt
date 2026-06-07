@@ -1,0 +1,8 @@
+[ Sun Jun 07 20-41-18 2026 ] Namespace(seed=1, epoch=50, batch_size=16, num_enc_layer=4, num_dec_layer=4, d_long=9, num_head=4, model_size=32, suffix='train', model='LSR', data='myopia', local=False, Y1_missing=0, Y2_missing=0, Y3_missing=0, inten_weight=0.01, surv_weight=0.1, lr=0.0003)
+[ Sun Jun 07 20-41-18 2026 ] ==================================================
+[ Sun Jun 07 20-41-18 2026 ] Starting training for dataset: myopia
+[ Sun Jun 07 20-41-18 2026 ] 4 heads, 4 enc layers,4 dec layers, 32 model dimension
+[ Sun Jun 07 20-41-18 2026 ] Data containing total 10018 trajectories
+[ Sun Jun 07 20-41-18 2026 ] ==================================================
+[ Sun Jun 07 20-41-18 2026 ] ==================================================
+[ Sun Jun 07 20-41-18 2026 ] Training for seed 1
