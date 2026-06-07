@@ -24,7 +24,7 @@ pd.options.mode.chained_assignment = None
 def main(args=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--seed", default=1, type=int)              
-    parser.add_argument("--epoch", default=20, type=int)          
+    parser.add_argument("--epoch", default=50, type=int)          
     parser.add_argument("--batch_size", default=16, type=int)      # Mini batch size for networks
     parser.add_argument("--num_enc_layer", default=4, type=int)  
     parser.add_argument("--num_dec_layer", default=4, type=int)  
