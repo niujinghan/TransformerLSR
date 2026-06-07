@@ -167,6 +167,8 @@ def enc_dec_mask(batch_mask,src_period,trg_period):
     device = batch_mask.device
     mask_clone = batch_mask.clone().cpu()
     batch_size,length = mask_clone.shape[0],mask_clone.shape[1]
+    if length == 0:
+        return torch.zeros((batch_size, 0, 0), dtype=torch.bool, device=device)
     stack_list = []
     for _ in range(src_period):
         stack_list.append(mask_clone)

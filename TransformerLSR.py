@@ -17,6 +17,8 @@ def dag_mask(pad,dag,nan_mask):
     device = pad.device
     dag_length = dag.shape[1]
     batch_size,seq_length = pad.shape[0],pad.shape[1]
+    if seq_length == 0:
+        return torch.zeros((batch_size, 0, 0), dtype=torch.bool, device=device)
     pad_clone = pad.clone().cpu()
     # expand the pad mask 
     pad_vec = []
@@ -55,6 +57,8 @@ def dec_mask(pad,dag):
     device = pad.device
     dag_length = dag.shape[1]
     batch_size,seq_length = pad.shape[0],pad.shape[1]
+    if seq_length == 0:
+        return torch.zeros((batch_size, 0, 0), dtype=torch.bool, device=device)
     pad_clone = pad.clone().cpu()
     # expand the pad mask 
     pad_vec = []
