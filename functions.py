@@ -66,7 +66,7 @@ def get_tensors(df, long=["Y1","Y2","Y3","Y4","Y5"], base=["X1","X2","X3"], obst
         full_mask[ii,jj] = 1
         obs_time[ii,jj] = row.loc[obstime]
         # extend mask for the death event 
-        if (jj+1) == row.loc["num_visit"] and row.loc["event"] is True:
+        if (jj+1) == row.loc["num_visit"] and row.loc["event"] == 1:
             inten_mask[ii,jj+1] = 1
             long_mask[ii,jj+1] = 0
 
@@ -128,7 +128,7 @@ def get_tensors_likelihood(df, long=["Y1","Y2","Y3","Y4","Y5"], base=["X1","X2",
         full_mask[ii,jj] = 1
         obs_time[ii,jj] = row.loc[obstime]
         # extend mask for the death event 
-        if (jj+1) == row.loc["num_visit"] and row.loc["event"] is True:
+        if (jj+1) == row.loc["num_visit"] and row.loc["event"] == 1:
             inten_mask[ii,jj+1] = 1
             long_mask[ii,jj+1] = 0
 
